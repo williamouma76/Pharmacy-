@@ -1,0 +1,70 @@
+import { Product } from './types';
+
+// Placeholder base64 image of a pill strip
+const placeholderImage = 'data:image/png;base64,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AAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAEAAAAyAAE-fhj-t/q-8LAAAAAElFTkSuQmCC';
+
+export const INITIAL_PRODUCTS: Product[] = [
+  {
+    id: 'prod1',
+    name: 'Paracetamol',
+    dosage: '500mg • 16 Tablets',
+    price: 1500,
+    description: 'A common pain reliever and fever reducer. It is used to treat many conditions such as headache, muscle aches, arthritis, backache, toothaches, colds, and fevers.',
+    stock: 120,
+    image: placeholderImage,
+    featured: true,
+    category: 'Pain Relief',
+  },
+  {
+    id: 'prod2',
+    name: 'Vitamin C',
+    dosage: '1000mg • 30 Tablets',
+    price: 12000,
+    description: 'An essential vitamin your body needs to develop and maintain. It is important for bones, skin, and blood vessels.',
+    stock: 80,
+    image: placeholderImage,
+    featured: true,
+    category: 'Vitamins',
+  },
+  {
+    id: 'prod3',
+    name: 'Cough Syrup',
+    dosage: '100ml Bottle',
+    price: 8500,
+    description: 'A medicated syrup used to treat coughs associated with the common cold, bronchitis, and other breathing illnesses.',
+    stock: 50,
+    image: placeholderImage,
+    category: 'Cold & Flu',
+  },
+  {
+    id: 'prod4',
+    name: 'Amoxicillin',
+    dosage: '250mg • 20 Capsules',
+    price: 6000,
+    description: 'An antibiotic used to treat a number of bacterial infections. These include middle ear infection, strep throat, pneumonia, skin infections, and urinary tract infections among others. Prescription required.',
+    stock: 30,
+    image: placeholderImage,
+    category: 'Antibiotics',
+  },
+    {
+    id: 'prod5',
+    name: 'Ibuprofen',
+    dosage: '200mg • 12 Tablets',
+    price: 2500,
+    description: 'A nonsteroidal anti-inflammatory drug (NSAID) used for relieving pain, helping with fever, and reducing inflammation.',
+    stock: 95,
+    image: placeholderImage,
+    featured: true,
+    category: 'Pain Relief',
+  },
+  {
+    id: 'prod6',
+    name: 'Antihistamine',
+    dosage: '10mg • 10 Tablets',
+    price: 4500,
+    description: 'Drugs which treat allergic rhinitis, common cold, influenza, and other allergies. Typically, people take antihistamines as an inexpensive, generic, over-the-counter drug.',
+    stock: 70,
+    image: placeholderImage,
+    category: 'Allergies',
+  },
+];

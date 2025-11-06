@@ -1,0 +1,7 @@
+{
+  "name": "Baypharm TZ",
+  "description": "A responsive web-application prototype for Baypharm TZ, a Tanzanian pharmacy ordering and management demo platform.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
